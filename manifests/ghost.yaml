@@ -1,0 +1,24 @@
+key: ghost
+version: 1.0.0
+tier: native
+auth: api_key
+surfaces:
+  - key: post
+    content_types: [text, image]
+    spec: {}
+rate_limits:
+  per_connection:
+    requests: 60
+    per_seconds: 60
+capabilities: [publish, status, delete]
+error_map:
+  "429": PLATFORM_RATE_LIMIT
+  "422": PLATFORM_CONTENT_REJECTED
+  "401": CONNECTION_AUTH_EXPIRED
+  quota_exhausted: PLATFORM_QUOTA_EXHAUSTED
+  DEST_SPEC_VIOLATION: DEST_SPEC_VIOLATION
+  DEST_RULE_FREQUENCY_CAP: DEST_RULE_FREQUENCY_CAP
+  PLATFORM_QUOTA_EXHAUSTED: PLATFORM_QUOTA_EXHAUSTED
+  PLATFORM_UNAVAILABLE: PLATFORM_UNAVAILABLE
+  CONNECTOR_DISABLED: CONNECTOR_DISABLED
+instance_param: base_url

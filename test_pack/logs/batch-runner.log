@@ -1,0 +1,3 @@
+2026-10-25 15:07:52,585 INFO job_accepted input=publish-demo.json job_id=a44ce730-4c5d-4e3f-abe4-517c47309184
+2026-10-25 15:07:53,630 INFO job_finished input=publish-demo.json job_id=a44ce730-4c5d-4e3f-abe4-517c47309184 status=succeeded output=test_pack\outputs\a44ce730-4c5d-4e3f-abe4-517c47309184.json
+2026-10-25 15:07:53,630 INFO batch_finished total=1 succeeded=1 failed=0

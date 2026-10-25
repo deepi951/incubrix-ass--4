@@ -1,0 +1,62 @@
+{
+  "input": "publish-demo.json",
+  "job": {
+    "id": "a44ce730-4c5d-4e3f-abe4-517c47309184",
+    "destination_key": "demo-community",
+    "status": "succeeded",
+    "progress": 100,
+    "created_at": "2026-10-25T09:37:52.564804+00:00",
+    "updated_at": "2026-10-25T09:37:52.646846+00:00",
+    "result_url": "/api/v1/jobs/a44ce730-4c5d-4e3f-abe4-517c47309184/results",
+    "evidence_url": "/api/v1/jobs/a44ce730-4c5d-4e3f-abe4-517c47309184/evidence"
+  },
+  "result": {
+    "publication": {
+      "platform_post_id": "sim-249887805f36fa4298e4",
+      "live_url": "mock://discourse/sim-249887805f36fa4298e4",
+      "status": "published"
+    },
+    "evidence": {
+      "connector_key": "discourse",
+      "destination_key": "demo-community",
+      "simulation_mode": true,
+      "provider_attempted": true,
+      "observed_at": "2026-10-25T09:37:52.646846+00:00",
+      "is_real_publication": false
+    },
+    "manifest": {
+      "providers": [
+        {
+          "key": "discourse",
+          "version": "1.0.0"
+        }
+      ],
+      "models": [],
+      "settings": {
+        "simulation_mode": true,
+        "connector_timeout_seconds": "10"
+      },
+      "seed": null,
+      "timings_ms": {
+        "validation": 0,
+        "publication": 0,
+        "total": 61
+      },
+      "cost_estimate": 0,
+      "warnings": [
+        "Simulated result; no platform post was created."
+      ],
+      "licence_rights": {
+        "status": "Content rights were not independently verified."
+      }
+    }
+  },
+  "evidence": {
+    "connector_key": "discourse",
+    "destination_key": "demo-community",
+    "simulation_mode": true,
+    "provider_attempted": true,
+    "observed_at": "2026-10-25T09:37:52.646846+00:00",
+    "is_real_publication": false
+  }
+}

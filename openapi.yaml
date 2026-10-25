@@ -1,0 +1,794 @@
+openapi: 3.1.0
+info:
+  title: IncuBrix Distribution
+  description: A configurable distribution API for long-tail destinations.
+  version: 0.1.0
+paths:
+  /api/v1/catalogue/import:
+    post:
+      summary: Import Catalogue
+      operationId: import_catalogue_api_v1_catalogue_import_post
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Idempotency-Key
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Import Catalogue Api V1 Catalogue Import Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/catalogue:
+    get:
+      summary: Get Catalogue
+      operationId: get_catalogue_api_v1_catalogue_get
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Catalogue Api V1 Catalogue Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/tailor:
+    post:
+      summary: Tailor Content
+      operationId: tailor_content_api_v1_tailor_post
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Idempotency-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TailorRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/recommendations:
+    post:
+      summary: Recommend
+      operationId: recommend_api_v1_recommendations_post
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Idempotency-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/catalogue/export:
+    get:
+      summary: Export Catalogue
+      operationId: export_catalogue_api_v1_catalogue_export_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/v1/catalogue/imports/{import_id}:
+    get:
+      summary: Read Import Report
+      operationId: read_import_report_api_v1_catalogue_imports__import_id__get
+      parameters:
+      - name: import_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Import Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Read Import Report Api V1 Catalogue Imports  Import
+                  Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/destinations:
+    post:
+      summary: Create Destination
+      operationId: create_destination_api_v1_destinations_post
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Idempotency-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DestinationCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      summary: List Destinations
+      operationId: list_destinations_api_v1_destinations_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DestinationResponse'
+                title: Response List Destinations Api V1 Destinations Get
+  /api/v1/jobs:
+    post:
+      summary: Create Job
+      operationId: create_job_api_v1_jobs_post
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Idempotency-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobCreate'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/jobs/{job_id}:
+    get:
+      summary: Get Job
+      operationId: get_job_api_v1_jobs__job_id__get
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Job Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/jobs/{job_id}/retry:
+    post:
+      summary: Retry Job
+      operationId: retry_job_api_v1_jobs__job_id__retry_post
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Job Id
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Idempotency-Key
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/jobs/{job_id}/results:
+    get:
+      summary: Get Job Results
+      operationId: get_job_results_api_v1_jobs__job_id__results_get
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Job Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Job Results Api V1 Jobs  Job Id  Results Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/jobs/{job_id}/evidence:
+    get:
+      summary: Get Job Evidence
+      operationId: get_job_evidence_api_v1_jobs__job_id__evidence_get
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Job Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Job Evidence Api V1 Jobs  Job Id  Evidence Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/destinations/{destination_key}/certify:
+    post:
+      summary: Certify Destination
+      operationId: certify_destination_api_v1_destinations__destination_key__certify_post
+      parameters:
+      - name: destination_key
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Destination Key
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Idempotency-Key
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Certify Destination Api V1 Destinations  Destination
+                  Key  Certify Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/certifications/{run_id}:
+    get:
+      summary: Get Certification
+      operationId: get_certification_api_v1_certifications__run_id__get
+      parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Certification Api V1 Certifications  Run Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/alerts:
+    get:
+      summary: List Alerts
+      operationId: list_alerts_api_v1_alerts_get
+      parameters:
+      - name: unresolved_only
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: true
+          title: Unresolved Only
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Alerts Api V1 Alerts Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/connectors:
+    get:
+      summary: List Connectors
+      operationId: list_connectors_api_v1_connectors_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response List Connectors Api V1 Connectors Get
+  /connector/v1/{connector_key}/{method}:
+    post:
+      summary: Call Connector
+      operationId: call_connector_connector_v1__connector_key___method__post
+      parameters:
+      - name: connector_key
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Connector Key
+      - name: method
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Method
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /:
+    get:
+      summary: Read Root
+      operationId: read_root__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+                title: Response Read Root  Get
+  /health:
+    get:
+      summary: Health Check
+      operationId: health_check_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+                title: Response Health Check Health Get
+  /ready:
+    get:
+      summary: Readiness Check
+      operationId: readiness_check_ready_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+                title: Response Readiness Check Ready Get
+components:
+  schemas:
+    DestinationCreate:
+      properties:
+        key:
+          type: string
+          pattern: ^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$
+          title: Key
+        connector_key:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Connector Key
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+        rules:
+          $ref: '#/components/schemas/PostingRules'
+      additionalProperties: false
+      type: object
+      required:
+      - key
+      - connector_key
+      - rules
+      title: DestinationCreate
+    DestinationResponse:
+      properties:
+        key:
+          type: string
+          title: Key
+        connector_key:
+          type: string
+          title: Connector Key
+        rules:
+          $ref: '#/components/schemas/PostingRules'
+        created_at:
+          type: string
+          title: Created At
+        enabled:
+          type: boolean
+          title: Enabled
+        last_certified_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Certified At
+        certified_level:
+          type: string
+          title: Certified Level
+      type: object
+      required:
+      - key
+      - connector_key
+      - rules
+      - created_at
+      - enabled
+      - last_certified_at
+      - certified_level
+      title: DestinationResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    JobCreate:
+      properties:
+        destination_key:
+          type: string
+          title: Destination Key
+        content:
+          $ref: '#/components/schemas/PublicationContent'
+      additionalProperties: false
+      type: object
+      required:
+      - destination_key
+      - content
+      title: JobCreate
+    JobResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        destination_key:
+          type: string
+          title: Destination Key
+        status:
+          type: string
+          title: Status
+        progress:
+          type: integer
+          title: Progress
+        created_at:
+          type: string
+          title: Created At
+        updated_at:
+          type: string
+          title: Updated At
+        result_url:
+          type: string
+          title: Result Url
+        evidence_url:
+          type: string
+          title: Evidence Url
+      type: object
+      required:
+      - id
+      - destination_key
+      - status
+      - progress
+      - created_at
+      - updated_at
+      - result_url
+      - evidence_url
+      title: JobResponse
+    PostingRules:
+      properties:
+        frequency_cap:
+          type: integer
+          minimum: 1.0
+          title: Frequency Cap
+        frequency_window_seconds:
+          type: integer
+          minimum: 1.0
+          title: Frequency Window Seconds
+          default: 604800
+        self_promo_allowed:
+          type: boolean
+          title: Self Promo Allowed
+        link_policy:
+          type: string
+          enum:
+          - allow
+          - disallow
+          - canonical_only
+          title: Link Policy
+        disclosure_required:
+          type: boolean
+          title: Disclosure Required
+      additionalProperties: false
+      type: object
+      required:
+      - frequency_cap
+      - self_promo_allowed
+      - link_policy
+      - disclosure_required
+      title: PostingRules
+    PublicationContent:
+      properties:
+        text:
+          type: string
+          maxLength: 100000
+          minLength: 1
+          title: Text
+        title:
+          type: string
+          maxLength: 10000
+          title: Title
+          default: ''
+        has_links:
+          type: boolean
+          title: Has Links
+          default: false
+        canonical_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Canonical Url
+        self_promotional:
+          type: boolean
+          title: Self Promotional
+          default: false
+        ai_generated:
+          type: boolean
+          title: Ai Generated
+          default: false
+        ai_disclosure:
+          type: boolean
+          title: Ai Disclosure
+          default: false
+      additionalProperties: false
+      type: object
+      required:
+      - text
+      title: PublicationContent
+    RecommendationRequest:
+      properties:
+        content:
+          $ref: '#/components/schemas/PublicationContent'
+        topics:
+          items:
+            type: string
+          type: array
+          maxItems: 50
+          minItems: 1
+          title: Topics
+        limit:
+          type: integer
+          maximum: 100.0
+          minimum: 1.0
+          title: Limit
+          default: 10
+      additionalProperties: false
+      type: object
+      required:
+      - content
+      - topics
+      title: RecommendationRequest
+    TailorRequest:
+      properties:
+        content:
+          $ref: '#/components/schemas/PublicationContent'
+        destination_keys:
+          items:
+            type: string
+          type: array
+          maxItems: 100
+          title: Destination Keys
+        limit:
+          type: integer
+          maximum: 100.0
+          minimum: 1.0
+          title: Limit
+          default: 20
+      additionalProperties: false
+      type: object
+      required:
+      - content
+      title: TailorRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError

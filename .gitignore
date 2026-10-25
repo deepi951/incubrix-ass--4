@@ -1,0 +1,17 @@
+.venv/
+venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite
+*.sqlite3
+data/
+frontend/node_modules/
+frontend/dist/
+frontend/tsconfig.tsbuildinfo
+IncuBrix_Assessment_4_Distribution_Long_Tail_Destination_Network_Brief.pdf

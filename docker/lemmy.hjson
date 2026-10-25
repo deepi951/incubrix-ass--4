@@ -1,0 +1,15 @@
+{
+  database: {
+    host: "lemmy-postgres"
+    port: 5432
+    user: "lemmy"
+    password: "lemmy-dev-only"
+    database: "lemmy"
+    pool_size: 5
+  }
+  hostname: "localhost:8536"
+  pictrs: {
+    url: "http://lemmy-pictrs:8080/"
+    api_key: "lemmy-dev-only"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "suite": "local-simulation-publication",
+  "purpose": "Demonstrate one API job from input through terminal status, result, and evidence using the in-process connector simulation.",
+  "real_platform_contacted": false,
+  "items": [
+    {
+      "path": "inputs/publish-demo.json",
+      "kind": "input",
+      "description": "Synthetic publication request for the demo-community destination."
+    },
+    {
+      "path": "outputs/a44ce730-4c5d-4e3f-abe4-517c47309184.json",
+      "kind": "output",
+      "description": "Captured response from a successful local simulation batch-runner execution.",
+      "job_status": "succeeded",
+      "simulation_mode": true,
+      "is_real_publication": false
+    },
+    {
+      "path": "logs/batch-runner.log",
+      "kind": "log",
+      "description": "Batch-runner acceptance, completion, and aggregate summary for the same local simulation execution."
+    }
+  ],
+  "reproduce": "See README.md in this directory."
+}

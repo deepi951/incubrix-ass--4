@@ -1,0 +1,24 @@
+key: assisted
+version: 1.0.0
+tier: assisted
+auth: none
+surfaces:
+  - key: manual_post
+    content_types: [text, image, video_link]
+    spec: {}
+rate_limits:
+  per_connection:
+    requests: 60
+    per_seconds: 60
+capabilities: [build_assist_pack]
+error_map:
+  quota_exhausted: PLATFORM_QUOTA_EXHAUSTED
+  DEST_SPEC_VIOLATION: DEST_SPEC_VIOLATION
+  DEST_RULE_FREQUENCY_CAP: DEST_RULE_FREQUENCY_CAP
+  CONNECTION_AUTH_EXPIRED: CONNECTION_AUTH_EXPIRED
+  PLATFORM_RATE_LIMIT: PLATFORM_RATE_LIMIT
+  PLATFORM_QUOTA_EXHAUSTED: PLATFORM_QUOTA_EXHAUSTED
+  PLATFORM_CONTENT_REJECTED: PLATFORM_CONTENT_REJECTED
+  PLATFORM_UNAVAILABLE: PLATFORM_UNAVAILABLE
+  CONNECTOR_DISABLED: CONNECTOR_DISABLED
+instance_param: submit_url

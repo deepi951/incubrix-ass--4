@@ -1,0 +1,104 @@
+services:
+  api:
+    build: .
+    environment:
+      SIMULATION_MODE: ${SIMULATION_MODE:-true}
+      DATABASE_PATH: /data/incubrix.db
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      RECERTIFICATION_ENABLED: ${RECERTIFICATION_ENABLED:-false}
+    volumes:
+      - incubrix-data:/data
+    ports:
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/ready', timeout=2)"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: ./frontend
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:80"
+
+  ghost-mysql:
+    image: mysql:8.0
+    profiles: ["local-platforms"]
+    environment:
+      MYSQL_ROOT_PASSWORD: ghost-root-dev-only
+      MYSQL_DATABASE: ghost
+      MYSQL_USER: ghost
+      MYSQL_PASSWORD: ghost-dev-only
+    volumes:
+      - ghost-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-pghost-root-dev-only"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  ghost:
+    image: ghost:6-alpine
+    profiles: ["local-platforms"]
+    depends_on:
+      ghost-mysql:
+        condition: service_healthy
+    environment:
+      url: http://localhost:2368
+      database__client: mysql
+      database__connection__host: ghost-mysql
+      database__connection__user: ghost
+      database__connection__password: ghost-dev-only
+      database__connection__database: ghost
+    volumes:
+      - ghost-content:/var/lib/ghost/content
+    ports:
+      - "127.0.0.1:2368:2368"
+
+  lemmy-postgres:
+    image: postgres:16-alpine
+    profiles: ["local-platforms"]
+    environment:
+      POSTGRES_USER: lemmy
+      POSTGRES_PASSWORD: lemmy-dev-only
+      POSTGRES_DB: lemmy
+    volumes:
+      - lemmy-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lemmy -d lemmy"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  lemmy-pictrs:
+    image: asonix/pictrs:0.5.24
+    profiles: ["local-platforms"]
+    environment:
+      PICTRS__SERVER__API_KEY: lemmy-dev-only
+    volumes:
+      - lemmy-pictrs-data:/mnt
+
+  lemmy:
+    image: dessalines/lemmy:0.19.20
+    profiles: ["local-platforms"]
+    depends_on:
+      lemmy-postgres:
+        condition: service_healthy
+      lemmy-pictrs:
+        condition: service_started
+    volumes:
+      - ./docker/lemmy.hjson:/config/config.hjson:ro
+    ports:
+      - "127.0.0.1:8536:8536"
+    environment:
+      RUST_LOG: warn
+
+volumes:
+  incubrix-data:
+  ghost-mysql-data:
+  ghost-content:
+  lemmy-postgres-data:
+  lemmy-pictrs-data:
